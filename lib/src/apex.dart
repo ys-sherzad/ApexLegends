@@ -1,3 +1,4 @@
+import 'package:apex/src/scale-animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -12,10 +13,12 @@ class Apex extends HookWidget {
     final _currentPageIndex = useState(0);
     final _isScrolling = useState(false);
 
+    final _pageAnimation = Tween()
+
     // final _currentOffset = useState(0);
 
     useEffect(() {
-      var unsubscribe = _ctrl.addListener(() {
+      _ctrl.addListener(() {
         if (_ctrl.page?.toInt() != _ctrl.page) {
           if (_isScrolling.value) return;
           print('SETTING ISSCROLLING TRUE <<<<<<<');
@@ -28,7 +31,7 @@ class Apex extends HookWidget {
         }
       });
 
-      return () => unsubscribe;
+      return _ctrl.dispose;
     }, [_ctrl]);
 
     // print('isScrolling >> ${_isScrolling.value}');
@@ -118,19 +121,22 @@ class Apex extends HookWidget {
                 top: 18,
                 left: 0,
                 right: 0,
-                child: Container(
-                  height: 140,
-                  width: MediaQuery.of(context).size.width,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      _buildAbility('assets/Wraith-Tactical.png', 'Tactical'),
-                      const SizedBox(width: 8.0),
-                      _buildAbility('assets/Wraith-Passive.png', 'Passive'),
-                      const SizedBox(width: 8.0),
-                      _buildAbility('assets/Wraith-Ultimate.png', 'Ultimate'),
-                    ],
+                child: ScaleAnimation(
+                  show: !_isScrolling.value,
+                  child: Container(
+                    height: 140,
+                    width: MediaQuery.of(context).size.width,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        _buildAbility('assets/Wraith-Tactical.png', 'Tactical'),
+                        const SizedBox(width: 8.0),
+                        _buildAbility('assets/Wraith-Passive.png', 'Passive'),
+                        const SizedBox(width: 8.0),
+                        _buildAbility('assets/Wraith-Ultimate.png', 'Ultimate'),
+                      ],
+                    ),
                   ),
                 ),
               ),
