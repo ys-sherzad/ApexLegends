@@ -1,33 +1,80 @@
 import 'package:apex/src/scale-animation.dart';
+import 'package:apex/src/utils/arrow_direction.dart';
+import 'package:apex/src/widgets/arrow_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-// const List<>
+const powers = [
+  {
+    "nickName": "Mirage",
+    "punchLine":  "I don't take myself too seriously. I don't take myself anywhere. I need to get out more",
+    'realName' : "Elliot Witt",
+    "age": "30",
+    "homeWorld": "Solace",
+    "tactical": {
+      "name": "Psyche Out",
+      "description": "Send out a holographic decoy to confuse the enemy."
+    },
+    "passive": {
+      "name": "Now You See Mee...",
+      "description": "Automatically cloak when using Respawn Beacons and reviving teammates."
+    },
+    "ultimate": "Life of the Party"
+  },
+  {
+    "nickName": "Mirage",
+    "punchLine":  "I don't take myself too seriously. I don't take myself anywhere. I need to get out more",
+    'realName' : "Elliot Witt",
+    "age": "30",
+    "homeWorld": "Solace",
+  },
+  {
+    "nickName": "Mirage",
+    "punchLine":  "I don't take myself too seriously. I don't take myself anywhere. I need to get out more",
+    'realName' : "Elliot Witt",
+    "age": "30",
+    "homeWorld": "Solace",
+  },
+  {
+    "nickName": "Mirage",
+    "punchLine":  "I don't take myself too seriously. I don't take myself anywhere. I need to get out more",
+    'realName' : "Elliot Witt",
+    "age": "30",
+    "homeWorld": "Solace",
+  },
+  {
+    "nickName": "Mirage",
+    "punchLine":  "I don't take myself too seriously. I don't take myself anywhere. I need to get out more",
+    'realName' : "Elliot Witt",
+    "age": "30",
+    "homeWorld": "Solace",
+  },
+
+];
 
 class Apex extends HookWidget {
   const Apex({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final _ctrl = usePageController(initialPage: 0);
+    final _ctrl = usePageController(initialPage: 0, viewportFraction: 0.8);
     final _currentPageIndex = useState(0);
     final _isScrolling = useState(false);
 
-    final _pageAnimation = Tween()
+    // final _pageAnimation = Tween()
 
     // final _currentOffset = useState(0);
 
     useEffect(() {
+      // FIXME: There must be a better way to detect
+      // the start and end of a scroll.
       _ctrl.addListener(() {
         if (_ctrl.page?.toInt() != _ctrl.page) {
           if (_isScrolling.value) return;
-          print('SETTING ISSCROLLING TRUE <<<<<<<');
           _isScrolling.value = true;
         } else {
           if (!_isScrolling.value) return;
-          print('SETTING ISSCROLLING FALSE <<<<<<<');
           _isScrolling.value = false;
-          _currentPageIndex.value = _ctrl.page?.toInt() ?? 0;
         }
       });
 
@@ -35,7 +82,7 @@ class Apex extends HookWidget {
     }, [_ctrl]);
 
     // print('isScrolling >> ${_isScrolling.value}');
-    // print('currentIndex >> ${_currentPageIndex.value}');
+    print('currentIndex >> ${_currentPageIndex.value}');
 
     List<Widget> _list = <Widget>[
       const Page(
@@ -77,13 +124,33 @@ class Apex extends HookWidget {
       );
     }
 
-    // print('value >>>> ${_ctrl.position.isScrollingNotifier.value}');
+    void onArrowTap(ArrowDirection direction) {
+      if (direction == ArrowDirection.up) {
+        if (_currentPageIndex.value != 0) {
+          _currentPageIndex.value--;
+          _ctrl.animateToPage(
+            _currentPageIndex.value,
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.ease,
+          );
+        }
+      } else {
+        if (_currentPageIndex.value != _list.length - 1) {
+          _currentPageIndex.value++;
+          _ctrl.animateToPage(
+            _currentPageIndex.value,
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.ease,
+          );
+        }
+      }
+    }
 
-    // print('isScrolling >>> ${_isScrolling.value}');
+    print('currentIndex >>>>>> ${_currentPageIndex.value}');
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xff2d374d),
+        backgroundColor: const Color(0xff2d374d),
         elevation: 0.0,
         toolbarHeight: 0.0, // status bar color
       ),
@@ -104,17 +171,12 @@ class Apex extends HookWidget {
             children: [
               Positioned.fill(
                 child: PageView(
-                  // pageSnapping: false,
                   children: _list,
-
-                  // physics: const BouncingScrollPhysics(),
-                  // dragStartBehavior: DragStartBehavior.down,
                   scrollDirection: Axis.vertical,
                   controller: _ctrl,
-                  // onPageChanged: (int index) {
-                  //   print("Page Changed: $index");
-                  //   // _currentPageIndex.value = index;
-                  // },
+                  onPageChanged: (int index) {
+                    _currentPageIndex.value = index;
+                  },
                 ),
               ),
               Positioned(
@@ -139,6 +201,32 @@ class Apex extends HookWidget {
                     ),
                   ),
                 ),
+              ),
+              Positioned(
+                bottom: 50,
+                right: 30,
+                child: Container(
+                    height: 175,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        if (_currentPageIndex.value != 0)
+                          ArrowButton(
+                              direction: ArrowDirection.up,
+                              onTap: onArrowTap,
+                              image: Image.asset('assets/arrow-up.png')),
+                        Container(),
+                        if (_currentPageIndex.value != _list.length - 1)
+                          ArrowButton(
+                            onTap: onArrowTap,
+                            direction: ArrowDirection.down,
+                            image: Image.asset('assets/arrow-down.png'),
+                          ),
+                        // Container(
+                        //   height: 49,
+                        // )
+                      ],
+                    )),
               ),
             ],
           ),
