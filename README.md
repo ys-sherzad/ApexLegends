@@ -1,4 +1,4 @@
-# Apex 👑
+# Apex Legends 👑
 A little bit of fun. Built with Flutter
 
 
