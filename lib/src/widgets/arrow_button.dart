@@ -20,7 +20,7 @@ class ArrowButton extends StatelessWidget {
         direction,
       ),
       child: CircleAvatar(
-        radius: 40,
+        radius: 30,
         backgroundColor: Colors.white12,
         child: Padding(
           padding: const EdgeInsets.all(10.0),

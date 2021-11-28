@@ -12,10 +12,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        fontFamily: 'Titillium Web',
         primarySwatch: Colors.blue,
       ),
-      home: const Apex(),
+      home: const Scaffold(
+        body: Apex(),
+      ),
     );
   }
 }
