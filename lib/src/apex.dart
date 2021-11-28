@@ -1,7 +1,20 @@
+
+
+
+///
+///     (╯ ͡❛ ͜ʖ ͡❛)╯┻━┻
+/// **************************************************************
+/// Instagram @ys.sherzad  *************************
+/// Twitter @ys_sherzad  ********************
+/// **************************************************************
+/// "Make Everyday Count" 🇦🇫
+///
+///
+
+import 'package:flutter/material.dart';
 import 'package:apex/src/scale-animation.dart';
 import 'package:apex/src/utils/arrow_direction.dart';
 import 'package:apex/src/widgets/arrow_button.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 List<Map<String, dynamic>> legends = [
